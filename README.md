@@ -25,4 +25,18 @@ controls.  Some ideas:
 * flip cards like the old clocks
 * rotating wheel with digits
 
+## XY mechanism to flip segments
 
+Here's a crazy idea:  build a big array of 7-segment digits which
+require some mechanical intervention to flip the segments (pushing a
+pin, magnetic activation, etc).  Then, construct a big XY mechanism
+(H-bot, CoreXY or other) on the back which would (slowly) go through
+and flip the segments as needed.  It would be fun to watch in action!
+
+The hours would change rarely, but a clock/calendar display would
+update once a minute and provide some action.
+
+## Overall design
+
+A reasonable size for the sign is 18" x 24".  Individual digits would
+be around 0.85 x 1.5 inches.

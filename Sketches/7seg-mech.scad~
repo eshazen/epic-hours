@@ -1,0 +1,15 @@
+
+$fn=64;
+e = 0.1
+
+
+seg_len = 15.6;
+seg_dia = 4.6;
+
+module segment_at( x, y, c) {
+
+     rotate_extrude( angle=360, convexity=10) {
+	  polygon( points [ [-seg_len/2, 0], [-seg_len/2+seg_dia/2, seg_dia/2],
+			    [seg_len/2, 0]]);
+     }
+}
