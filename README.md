@@ -40,3 +40,9 @@ update once a minute and provide some action.
 
 A reasonable size for the sign is 18" x 24".  Individual digits would
 be around 0.85 x 1.5 inches.
+
+### LED version
+
+The first version should just be "boring" LEDs.  Probably LED matrix,
+at least for a banner at the top so messages can be scrolled.
+A 7x9 font seems reasonable. 
