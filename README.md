@@ -8,10 +8,10 @@ Also, it should display the current date and time, just for fun.
 
 For flexibility, should be able to display 4 digits:
 
-ten hours:   (blank) or 1
-one hours:   (blank) or 0-9
-ten minutes: (blank) or 0, 3
-one minutes: (blank) or 0
+    ten hours:   (blank) or 1
+    one hours:   (blank) or 0-9
+    ten minutes: (blank) or 0, 3
+    one minutes: (blank) or 0
 
 If we come up with a universal digit display (e.g. 7-segment) then
 we could just use it everywhere.
@@ -45,4 +45,29 @@ be around 0.85 x 1.5 inches.
 
 The first version should just be "boring" LEDs.  Probably LED matrix,
 at least for a banner at the top so messages can be scrolled.
-A 7x9 font seems reasonable. 
+A 7x9 font seems reasonable.   So, LED count would be:
+
+    Hours digits:  7 days * 8 digits = 56 * 63 = 3528
+                   56 char (7x9)
+	Colons:                                        28 (always on)
+	Banner:        15 char w/ space = 15 * 72  = 1080
+	
+Possible drivers:
+
+    ATTiny, ATMega with simple mux, need ~19 I/Os    $1.50 each @ 25
+    ATMega8515 has 32 I/Os.  Reserve 2 for comms,
+  	  leaves 30.  Could do a 14 x 16 array (4 digits). $3.50 each @ 25
+
+LEDs:
+
+    Thinking of 5mm round thru-hole red
+    Something like $0.07 each from regular suppliers.
+	Amazon has home down to $0.04 each.
+
+Adafruit red 8x8 1.2" matrix is $3.95.  Not a bad deal.
+A "12:00" type display fits in 14 columns _if_ the first
+column is truncated (only blank or '1' need be displayed for hours).
+
+
+![Preview pixture](Sketches/preview.jpg)
+
