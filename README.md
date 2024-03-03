@@ -43,14 +43,17 @@ be around 0.85 x 1.5 inches.
 
 ### LED version
 
+![Preview pixture](Sketches/preview.jpg)
+
 The first version should just be "boring" LEDs.  Probably LED matrix,
 at least for a banner at the top so messages can be scrolled.
-A 7x9 font seems reasonable.   So, LED count would be:
+8x8 maxtrix are very popular, so thinking of a 5x7 font.
+24 columns work for 12:34 displays.
 
-    Hours digits:  7 days * 8 digits = 56 * 63 = 3528
-                   56 char (7x9)
-	Colons:                                        28 (always on)
-	Banner:        15 char w/ space = 15 * 72  = 1080
+Need a total of 42+8 = 50 of these.  This is about $100
+for modules with MAX7219 included.
+
+
 	
 Possible drivers:
 
@@ -68,6 +71,7 @@ Adafruit red 8x8 1.2" matrix is $3.95.  Not a bad deal.
 A "12:00" type display fits in 14 columns _if_ the first
 column is truncated (only blank or '1' need be displayed for hours).
 
+Just found out you can buy 10 of these for $12.  Ordered a set
+to play with.
 
-![Preview pixture](Sketches/preview.jpg)
-
+[Preview](Sketches/amazon_8x8.jpg)
