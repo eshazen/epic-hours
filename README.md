@@ -53,25 +53,19 @@ at least for a banner at the top so messages can be scrolled.
 Need a total of 42+8 = 50 of these.  This is about $100
 for modules with MAX7219 included.
 
+Power, 3 digits, quiescent (blanked) = 20mA.
 
-	
-Possible drivers:
+| Intensity | mA  |
+|-----------|-----|
+| 3         | 154 |
+| 2         | 118 |
+| 1         | 80  |
 
-    ATTiny, ATMega with simple mux, need ~19 I/Os    $1.50 each @ 25
-    ATMega8515 has 32 I/Os.  Reserve 2 for comms,
-  	  leaves 30.  Could do a 14 x 16 array (4 digits). $3.50 each @ 25
+Say 17 groups of 3 @ 150mA = 2.6A @ 5V
 
-LEDs:
+Standoffs:
 
-    Thinking of 5mm round thru-hole red
-    Something like $0.07 each from regular suppliers.
-	Amazon has home down to $0.04 each.
-
-Adafruit red 8x8 1.2" matrix is $3.95.  Not a bad deal.
-A "12:00" type display fits in 14 columns _if_ the first
-column is truncated (only blank or '1' need be displayed for hours).
-
-Just found out you can buy 10 of these for $12.  Ordered a set
-to play with.
+    8   8-32 x 1 inch
+	200 6-32 x 1/2 inch less than 0.22" OD
 
 [Preview](Sketches/amazon_8x8.jpg)
