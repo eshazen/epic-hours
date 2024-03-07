@@ -18,26 +18,6 @@ we could just use it everywhere.
 
 A total of 28 digits plus ~10 for date/time are needed
 
-It would be cool to have a mechanical display with electronic
-controls.  Some ideas:
-
-* 7-segment with white/black segments which toggle somehow
-* flip cards like the old clocks
-* rotating wheel with digits
-
-## XY mechanism to flip segments
-
-Here's a crazy idea:  build a big array of 7-segment digits which
-require some mechanical intervention to flip the segments (pushing a
-pin, magnetic activation, etc).  Then, construct a big XY mechanism
-(H-bot, CoreXY or other) on the back which would (slowly) go through
-and flip the segments as needed.  It would be fun to watch in action!
-
-The hours would change rarely, but a clock/calendar display would
-update once a minute and provide some action.
-
-## Overall design
-
 A reasonable size for the sign is 18" x 24".  Individual digits would
 be around 0.85 x 1.5 inches.
 
@@ -69,3 +49,13 @@ Standoffs:
 	200 6-32 x 1/2 inch less than 0.22" OD
 
 [Preview](Sketches/amazon_8x8.jpg)
+
+### Development Notes
+
+Propose to use an ESP32 30-pin dev board.  
+See (this page)[https://lastminuteengineers.com/esp32-pinout-reference/]
+for some very useful notes.
+
+Hoping that we can daisy-chain all of the displays, assuming good GND
+and power connections.
+
