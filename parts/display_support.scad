@@ -8,11 +8,11 @@ mm = 25.4;
 
 include <post.scad>;
 
-ndigit = 3;
+ndigit = 1;
 
 bracket_wid = 32;		/* width of one panel */
 bracket_len = 9;		/* bracket width (in Y) */
-bracket_hgt = 0.125*mm;
+bracket_hgt = 1;
 
 total_hgt = 0.5*mm;		/* overall bracket height (back to pcb) */
 
@@ -49,7 +49,7 @@ module test_peg() {
      post_at( 5, 5);
 }
 
-multi_bracket();
+// multi_bracket();
 
 
-// test_peg();
+test_peg();

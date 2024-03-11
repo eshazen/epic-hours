@@ -1,8 +1,8 @@
-tip_dia1 = 3.1;			/* mounting hole ID */
-tip_dia2 = 2.9;
-tip_hgt = 3.5;			/* length of tip through hole */
+tip_dia1 = 3.5;			/* mounting hole ID */
+tip_dia2 = 3.5;
+tip_hgt = 1.6;			/* length of tip through hole */
 
-peg_dia = 0.22*mm;		/* diameter of peg PCB rests on */
+peg_dia = 0.25*mm;		/* diameter of peg PCB rests on */
 peg_hgt = 0.25*mm;
 
 // support post
