@@ -147,7 +147,7 @@ module multi_assembly( nb, dx) {
 
 // projection()
 // rotate( [90, 0, 0])
-rotate( [0, 0, 45])
+// rotate( [0, 0, 45])
 multi_bracket(8);
 // multi_assembly( 3, 155);
 
