@@ -2,24 +2,22 @@
 
 This is a project to create an electronic sign to display the opening
 hours in EPIC.  Basic function is simple:  display open and close time
-for each day of the week.
+for each day of the week
 
-Also, it should display the current date and time, just for fun.
-
-For flexibility, should be able to display 4 digits:
+There are (14) 8x24 matrix displays for open/close 7 days/week.
+These use a special font to fit in the space:
 
     ten hours:   (blank) or 1
     one hours:   (blank) or 0-9
     ten minutes: (blank) or 0, 3
     one minutes: (blank) or 0
 
-If we come up with a universal digit display (e.g. 7-segment) then
-we could just use it everywhere.
+At the top there is a larger matrix, 8x64 which could display
+a scrolling banner.
 
-A total of 28 digits plus ~10 for date/time are needed
-
-A reasonable size for the sign is 18" x 24".  Individual digits would
-be around 0.85 x 1.5 inches.
+Each 8x8 matrix is driven by a MAX7219 controller IC.
+See for example 
+[documentation](https://lastminuteengineers.com/max7219-dot-matrix-arduino-tutorial/).
 
 ### LED version
 
@@ -52,10 +50,28 @@ Standoffs:
 
 ### Development Notes
 
-Propose to use an ESP32 30-pin dev board.  
+A pcb [multi_display_shield] https://github.com/eshazen/epic-hours/tree/main/KiCAD/multi_display_shield provides power distribution and control for 8
+displays.  Each day is organized as a 8x48 single display,
+with an 8x64 banner at the top.
+
+For Wifi:  propose to use an ESP32 30-pin dev board.  
 See (this page)[https://lastminuteengineers.com/esp32-pinout-reference/]
 for some very useful notes.
 
-Hoping that we can daisy-chain all of the displays, assuming good GND
-and power connections.
+### Software / Interface
 
+Use Arduino Uno as display controller.  Proposed (serial) command set:
+
+	H            - Help - list commands
+	T n hh:mm    - Time - set weekday time (0,1 = Mon, 2,3 = Tue etc)
+	B text...    - Banner - set banner text.  Scroll if too long
+    I n val      - Intensity - set intensity n=0-7
+
+Could use either USB/serial connection or direct wire to 0/1 or 
+other pins using SoftwareSerial.
+	
+Use an ESP32 or other to connect to WiFi and retrieve commands
+from somewhere.
+
+
+	

@@ -1,12 +1,16 @@
 #include <LEDMatrixDriver.hpp>
+//
+// LedMatrixPtr.ino - demo to run all displays simultaneously
+//
+// 
+// Uses SPI driver Library by Bartosz Bielawski.
+//
+// Wiring:  MOSI->DIN, SCK->CLK, CS listed below
 
-// This sketch draw marquee text on your LED matrix using the hardware SPI driver Library by Bartosz Bielawski.
-// Example written 16.06.2017 by Marko Oette, www.oette.info
-
-// Define the ChipSelect pin for the led matrix (Dont use the SS or MISO pin of your Arduino!)
-// Other pins are Arduino specific SPI pins (MOSI=DIN, SCK=CLK of the LEDMatrix) see https://www.arduino.cc/en/Reference/SPI
+// list of CS pins for the displays.  First 7 are the days of the week
 const uint8_t cs_pins[] = { 6, A0, A1, A2, A3, A4, A5, 7 };
 #define NDISP (sizeof(cs_pins)/sizeof(cs_pins[0]))
+// last display is the banner at the top
 #define TOPDISP (NDISP-1)
 
 // Number of 8x8 segments you are connecting
@@ -16,11 +20,10 @@ const int TOPMATRIX_SEGMENTS = 8; // top display
 const int TOPMATRIX_WIDTH    = TOPMATRIX_SEGMENTS * 8;
 const int LEDMATRIX_WIDTH    = LEDMATRIX_SEGMENTS * 8;
 
-// The LEDMatrixDriver class instance
-// LEDMatrixDriver lmd(LEDMATRIX_SEGMENTS, LEDMATRIX_CS_PIN);
+// The LEDMatrixDriver class instances
 LEDMatrixDriver* lmdp[NDISP];
 
-// Marquee text
+// Marquee text buffer
 char text[] = "12:34 11:00";
 
 // one framebuffer
