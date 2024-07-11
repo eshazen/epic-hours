@@ -149,9 +149,10 @@ int xs=0;
 void setup() {
   for( uint8_t i=0; i<NDISP; i++) {
     if( i == TOPDISP)
-      lmdp[i] = new LEDMatrixDriver(TOPMATRIX_SEGMENTS, cs_pins[i], 0, fb);
+      // flags=7 to invert the display, 0 for normal
+      lmdp[i] = new LEDMatrixDriver(TOPMATRIX_SEGMENTS, cs_pins[i], 7, fb);
     else
-      lmdp[i] = new LEDMatrixDriver(LEDMATRIX_SEGMENTS, cs_pins[i], 0, fb);
+      lmdp[i] = new LEDMatrixDriver(LEDMATRIX_SEGMENTS, cs_pins[i], 7, fb);
     // init the display
     lmdp[i]->setEnabled(true);
     lmdp[i]->setIntensity(0);   // 0 = low, 10 = high
@@ -180,6 +181,8 @@ void setup() {
     lmdp[i]->clear();
     lmdp[i]->display();
     delay(100);
+    *t_open = '0'+i;
+    *t_clos = '0'+(7-i);
     drawStringN(lmdp[i], t_open, 5, 0, 0);
     drawStringN(lmdp[i], t_clos, 5, 24, 0);
     lmdp[i]->display();
