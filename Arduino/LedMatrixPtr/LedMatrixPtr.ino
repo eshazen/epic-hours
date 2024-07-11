@@ -1,16 +1,12 @@
-#include <LEDMatrixDriver.hpp>
 //
-// LedMatrixPtr.ino - demo to run all displays simultaneously
+// test firmware for the EPIC LED sign
+//   8 display chains, first 6 with (6) 8x8 segments, last one with (8) 8x8 segments
 //
-// 
-// Uses SPI driver Library by Bartosz Bielawski.
-//
-// Wiring:  MOSI->DIN, SCK->CLK, CS listed below
 
-// list of CS pins for the displays.  First 7 are the days of the week
+#include <LEDMatrixDriver.hpp>
+
 const uint8_t cs_pins[] = { 6, A0, A1, A2, A3, A4, A5, 7 };
 #define NDISP (sizeof(cs_pins)/sizeof(cs_pins[0]))
-// last display is the banner at the top
 #define TOPDISP (NDISP-1)
 
 // Number of 8x8 segments you are connecting
@@ -20,17 +16,24 @@ const int TOPMATRIX_SEGMENTS = 8; // top display
 const int TOPMATRIX_WIDTH    = TOPMATRIX_SEGMENTS * 8;
 const int LEDMATRIX_WIDTH    = LEDMATRIX_SEGMENTS * 8;
 
-// The LEDMatrixDriver class instances
+// The LEDMatrixDriver class instance
+// LEDMatrixDriver lmd(LEDMATRIX_SEGMENTS, LEDMATRIX_CS_PIN);
 LEDMatrixDriver* lmdp[NDISP];
 
-// Marquee text buffer
+// Buffer to hours display
 char text[] = "12:34 11:00";
+
+// Top line marquee speed (lower nubmers = faster)
+const int ANIM_DELAY = 30;
 
 // one framebuffer
 uint8_t fb[TOPMATRIX_SEGMENTS*8];
 
-// Marquee speed (lower nubmers = faster)
-const int ANIM_DELAY = 30;
+// Time update delay for demo (1 sec)
+const int TIME_DELAY = 1000;
+
+unsigned long last_ms;
+unsigned long time_ms;
 
 void setup() {
   for( uint8_t i=0; i<NDISP; i++) {
@@ -44,9 +47,11 @@ void setup() {
     lmdp[i]->clear();
     lmdp[i]->display();
   }
+  last_ms = millis();
+  time_ms = millis();
 }
 
-int x=0, y=0;   // start top left
+// int x=0, y=0;   // start top left
 
 byte font_char[9];		// buffer for one font character
 
@@ -137,36 +142,53 @@ const byte font[12][8] PROGMEM = { { 5, 0x70,0x88,0x88,0x88,0x88,0x88,0x70}, // 
 uint8_t hour = 12;
 uint8_t minu = 34;
 
+// scrolling text
+char scrolling[] = "Welcome to EPIC!  Open hours today...";
+
+int xs=0;
+
+
 void loop()
 {
-  for( uint8_t i=0; i<NDISP; i++) {
-    lmdp[i]->clear();
+  unsigned long ms_now = millis();
 
-    if( i == TOPDISP) {
+  // check for scrolling display update
+  if( ms_now - last_ms > ANIM_DELAY) {
+    last_ms = ms_now;
 
-      // text message on top
-      snprintf( text, sizeof(text), "WED 5/8", minu);
-      drawStringW(lmdp[i], text, strlen(text), 0, 0);
+    // text message on top, scrolling
+    int len = strlen( scrolling);
+    drawStringW(lmdp[TOPDISP], scrolling, len, xs, 0);
 
-    } else {
+    // Toggle display of the new framebuffer
+    lmdp[TOPDISP]->display();
+
+    // Advance to next coordinate
+    if( --xs < len * -8 ) 
+      xs = TOPMATRIX_WIDTH;
+  }
+
+  // check for others update
+  if( ms_now - time_ms > TIME_DELAY) {
+    time_ms = ms_now;
+
+    for( uint8_t i=0; i<NDISP-1; i++) {
+      lmdp[i]->clear();
 
       snprintf( text, sizeof(text), "%d:%02d", i, minu);
       drawStringN(lmdp[i], text, strlen(text), 0, 0);
 
       snprintf( text, sizeof(text), "%d:%02d", i+6, minu);
       drawStringN(lmdp[i], text, strlen(text), 24, 0);
-    }
 
     // Toggle display of the new framebuffer
-    lmdp[i]->display();
+      lmdp[i]->display();
+    }
+
+    // update the fake time
+    if( ++minu > 59)
+      minu = 0;
   }
-
-  // update the fake time
-  if( ++minu > 59)
-    minu = 0;
-
-  // Wait to let the human read the display
-  delay(1000);
 }
 
 
