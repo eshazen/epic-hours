@@ -160,9 +160,10 @@ module arduinos() {
   }
 }
 
-bottom();
-box();
-standoffs();
-// arduinos();
+module assembly() {
+  bottom();
+  box();
+  standoffs();
+}
 
-// flange();
+projection( cut=true) translate( [0, 0, -10])  assembly();

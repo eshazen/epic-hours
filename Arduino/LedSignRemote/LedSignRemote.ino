@@ -51,7 +51,8 @@ unsigned long last_ms;
 unsigned long time_ms;
 
 uint8_t dayn = 0;		// day number for update
-uint8_t updt = 0;		// update flag
+uint8_t updt = 0;		// update flag for times
+uint8_t nscr = 0;   // update flag for scrolling
 uint8_t brgt = 0;		// brightness
 
 byte font_char[9];		// buffer for one font character
@@ -191,7 +192,7 @@ void setup() {
 
 // overwrite first control character with \0
 void chomp( char *buff) {
-  while( !iscntrl( *buff))
+  while( *buff && !iscntrl( *buff))
     ++buff;
   *buff = '\0';
 }
@@ -208,7 +209,9 @@ void loop()
     chomp( buff);
     switch( toupper( buff[0])) {
     case 'M':			// set marquee text
+      memset( scrolling, 0, sizeof(scrolling));
       strcpy( scrolling, buff+2);
+      nscr = 1;
       break;
 
     case 'O':			// set open time
@@ -228,15 +231,23 @@ void loop()
     case 'I':			// set intensity
       brgt = buff[2]-'0';
       for( int i=0; i<NDISP; i++)
-	lmdp[i]->setIntensity(brgt);   // 0 = low, 10 = high
+	      lmdp[i]->setIntensity(brgt);   // 0 = low, 10 = high
 
       break;
     }
   }
 
   // check for scrolling display update
+  
   if( ms_now - last_ms > ANIM_DELAY) {
     last_ms = ms_now;
+
+    if( nscr) {
+      nscr = 0;
+      lmdp[TOPDISP]->clear();
+      lmdp[TOPDISP]->display();
+      xs = 0;
+    }
 
     // text message on top, scrolling
     int len = strlen( scrolling);
