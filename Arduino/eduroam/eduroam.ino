@@ -39,7 +39,7 @@ void setup() {
   
   Serial2.begin( 9600);
   delay(1000);
-  Serial2.print( "M CONNECTING\n");
+  Serial2.print( "M CONNECTING\n\r");
   delay(5000);
   Serial.print(F("Connecting to network: "));
   Serial.println(ssid);
@@ -47,6 +47,9 @@ void setup() {
  
   WiFi.begin(ssid, WPA2_AUTH_PEAP, EAP_IDENTITY, EAP_USERNAME, EAP_PASSWORD); // without CERTIFICATE, RADIUS server EXCEPTION "for old devices" required
   
+  Serial.print("MAC: ");
+  Serial.println( WiFi.macAddress());
+
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(F("."));
@@ -55,7 +58,7 @@ void setup() {
   Serial.println(F("WiFi is connected!"));
   Serial.println(F("IP address set: "));
   Serial.println(WiFi.localIP()); //print LAN IP
-  Serial2.print("M CONNECTED\n");
+  Serial2.print("M CONNECTED\n\r");
   delay(500);
 }
 
@@ -85,7 +88,7 @@ void loop(){
 
   // send a request
   if( !nrecs || crec >= nrecs-1) { // no data available, request it
-    client.println("DAT");
+    client.print("DAT");
   } else {
     if( crec < nrecs-1) {
       sprintf( resp, "REC %d", crec);
@@ -119,7 +122,7 @@ void loop(){
     } else {
       // must be a command
       if( *s == 'M' || *s == 'O' || *s == 'C' || *s == 'I') {
-	sprintf( resp, "%s\n", s); // ensure there is \n
+	sprintf( resp, "%s\n\r", s); // ensure there is \n
 	Serial2.print( resp);
       }
     }

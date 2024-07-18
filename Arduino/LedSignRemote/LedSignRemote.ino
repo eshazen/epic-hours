@@ -35,6 +35,9 @@ char t_clos[6];
 // command input buffer
 char buff[80];
 
+// token pointers
+char *tokn[5];
+
 // scrolling text buffer
 char scrolling[80];
 
@@ -51,11 +54,13 @@ unsigned long last_ms;
 unsigned long time_ms;
 
 uint8_t dayn = 0;		// day number for update
-uint8_t updt = 0;		// update flag for times
-uint8_t nscr = 0;   // update flag for scrolling
+uint8_t utime = 0;		// update flag for times
+uint8_t nscr = 0;		// update flag for scrolling
 uint8_t brgt = 0;		// brightness
 
 byte font_char[9];		// buffer for one font character
+
+int ntok;
 
 // Special 5x7 font with digits 0-9 only, space
 // variable width, width is first byte
@@ -141,6 +146,34 @@ const byte font[12][8] PROGMEM = { { 5, 0x70,0x88,0x88,0x88,0x88,0x88,0x70}, // 
 
 
 
+//
+// split a comma-separated (or other delim) string to up to siz tokens
+// return token count
+//
+// NOTE:  overwrites string by terminating tokens with '\0'
+#
+#define SPLIT_DELIM ' '
+
+int split( char *str, char **toks, int siz) {
+  char *p = str;		/* point to start of string */
+  int nt = 0;			/* token counter */
+  
+  while( *p && nt < siz) {  /* loop to string end or over siz */
+    toks[nt++] = p;	    /* always point to token here */
+    while( *p && *p != SPLIT_DELIM)	/* skip over non-delims */
+      ++p;
+    // check if delim or end of string
+    if( *p) {  // non-null char must be delim
+      // check for empty token
+      if( !p[1])	    /* is this the end of the string */
+	toks[nt++] = p+1;   /* yes, add pointer to enpty token */
+      *p = '\0';	    /* and terminate it */
+      ++p;
+    }
+  }
+  return nt;
+}
+
 uint8_t hour = 12;
 uint8_t minu = 34;
 
@@ -205,27 +238,27 @@ void loop()
   // check for characters
   if( Serial.available()) {
     // read a complete line
-    Serial.readBytesUntil( '\n', buff, sizeof(buff));
+    memset( buff, 0, sizeof(buff));
+    Serial.readBytesUntil( '\n', buff, sizeof(buff)-1);
     chomp( buff);
     switch( toupper( buff[0])) {
+
     case 'M':			// set marquee text
-      memset( scrolling, 0, sizeof(scrolling));
       strcpy( scrolling, buff+2);
       nscr = 1;
       break;
 
-    case 'O':			// set open time
-      dayn = buff[2]-'0';
-      memset( t_open, 0, sizeof(t_open));
-      strncpy( t_open, buff+4, sizeof(t_open));
-      updt = 1;
-      break;
-
-    case 'C':			// set close time
-      dayn = buff[2]-'0';
-      memset( t_clos, 0, sizeof(t_clos));
-      strncpy( t_clos, buff+4, sizeof(t_clos));
-      updt = 1;
+    case 'T':			// update times for a day
+      //      int split( char *str, char **toks, int siz) {
+      ntok = split( buff, tokn, sizeof(tokn)/sizeof(tokn[0]));
+      if( ntok == 4) {
+	dayn = *tokn[1]-'0';
+	memset( t_open, 0, sizeof(t_open));
+	strncpy( t_open, tokn[2], sizeof(t_open));
+	memset( t_clos, 0, sizeof(t_clos));
+	strncpy( t_clos, tokn[3], sizeof(t_clos));
+	utime = 1;
+      }
       break;
 
     case 'I':			// set intensity
@@ -262,8 +295,8 @@ void loop()
   }
 
   // check for others update
-  if( updt) {
-    updt = 0;
+  if( utime) {
+    utime = 0;
 
     int i = dayn;
     lmdp[i]->clear();
@@ -277,6 +310,7 @@ void loop()
     // Toggle display of the new framebuffer
     lmdp[i]->display();
   }
+  
 }
 
 

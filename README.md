@@ -60,18 +60,15 @@ for some very useful notes.
 
 ### Software / Interface
 
-Use Arduino Uno as display controller.  Proposed (serial) command set:
+Use Arduino Uno as display controller.  Serial command set:
 
-	H            - Help - list commands
-	T n hh:mm    - Time - set weekday time (0,1 = Mon, 2,3 = Tue etc)
-	B text...    - Banner - set banner text.  Scroll if too long
-    I n val      - Intensity - set intensity n=0-7
+	T n hh:mm hh:mm   - Time - set weekday time (0,1 = Mon, 2,3 = Tue etc)
+	                           for opening and closing
+	M text...         - Banner - set banner text.  Scroll if too long
+    I n               - Intensity - set intensity n=0-7
 
-Could use either USB/serial connection or direct wire to 0/1 or 
-other pins using SoftwareSerial.
-	
-Use an ESP32 or other to connect to WiFi and retrieve commands
-from somewhere.
+ESP32 connects to eduroam WiFi and handles queries such as:
 
+http://10.239.25.67/CMD=M%20Welcome%20to%20EPIC
 
-	
+Everything after the "CMD=" is percent-decoded and sent to the Arduino.
