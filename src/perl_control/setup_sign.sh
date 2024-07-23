@@ -1,7 +1,7 @@
 %!/bin/bash
 
 % set the sign
-./set_sign.pl 'M Welcome to EPIC'
+./set_sign.pl 'M Welcome to EPIC!  We are open...'
 sleep 0.25
 ./set_sign.pl 'T 0 9:00 5:00'
 sleep 0.25
