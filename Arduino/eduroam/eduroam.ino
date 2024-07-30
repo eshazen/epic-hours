@@ -26,8 +26,11 @@
 //Available option of anonymous identity for federation of RADIUS servers or 1st Domain RADIUS servers
 #define EAP_ANONYMOUS_IDENTITY "" //anonymous@example.com, or you can use also nickname@example.com
 #define EAP_IDENTITY "hazen@bu.edu" //nickname@example.com, at some organizations should work nickname only without realm, but it is not recommended
-#define EAP_PASSWORD "U1traLin3arKT88" //password for eduroam account
-#define EAP_USERNAME "hazen@bu.edu" // the Username is the same as the Identity in most eduroam networks.
+
+ERROR - replace with valid WiFi credentials
+
+#define EAP_PASSWORD "notThePassword" //password for eduroam account
+#define EAP_USERNAME "notTheUsername@bu.edu" // the Username is the same as the Identity in most eduroam networks.
 
 //SSID NAME
 const char* ssid = "eduroam"; // eduroam SSID
