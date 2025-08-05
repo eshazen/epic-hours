@@ -166,4 +166,5 @@ module assembly() {
   standoffs();
 }
 
-projection( cut=true) translate( [0, 0, -10])  assembly();
+// projection( cut=true) translate( [0, 0, -10])  
+assembly();

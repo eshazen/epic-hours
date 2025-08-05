@@ -4,8 +4,7 @@
 // Expect serial commands at 9600 baud on hardware UART:
 //
 // M <marquee text>          update the top-line scrolled message (80 char max)
-// O n hh:mm                 update opening time for day n (0-7)
-// C n hh:mm                 update closing time for day n (0-7)
+// T n hh:mm hh:mm           update open/close times for a day (0-7)
 // I n                       set intensity to n (0-10)
 //
 // Note that times must be 12-hour (there isn't room for a digit "2" in the 1st position)
